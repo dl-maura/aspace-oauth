@@ -104,6 +104,26 @@ AppConfig[:authentication_sources] = [
       # here using the fetch_raw_info option.
       fetch_raw_info: ->(s, o, t, user_info) {  { email: "#{user_info['user']}@ivory-tower.edu" } }
     }
+  },
+  {
+    model: 'ASOauth',
+    provider: 'openid_connect',
+    label: 'OpenID Connect Login',
+    slo_link: false,
+    config: {
+      name: :openid_connect,
+      scope: [:openid, :email, :profile],
+      response_type: :code,
+      uid_field: "preferred_username",
+      client_options: {
+        port: 443,
+        scheme: "https",
+        host: "login.ivory-tower.edu",
+        identifier: ENV["OIDC_CLIENT_ID"],
+        secret: ENV["OIDC_SECRET_KEY"],
+        redirect_uri: "http://localhost:3000/auth/openid_connect/callback",
+      },
+    }
   }
 ]
 
